@@ -9,7 +9,7 @@ function AllPosts() {
     useEffect(()=>{
         service.getPosts([]).then((posts) => {
             if(posts){
-                setPosts(posts.documents)
+                setPosts(posts.documents.reverse())
             }
         })
     }, [])
