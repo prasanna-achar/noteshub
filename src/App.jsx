@@ -26,7 +26,7 @@ function App() {
     <div className="w-screen min-h-screen flex flex-col bg-gray-200">
       <div className="flex-grow">
         <Header />
-        <main className="min-h-[60vh]">
+        <main className="min-h-[60vh] z-0">
           <Outlet />
         </main>
       </div>

@@ -8,7 +8,7 @@ function Header() {
   const authStatus = useSelector((state) => state.auth.status)
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false);
-
+  
 
   const navItems = [
     {
@@ -39,7 +39,7 @@ function Header() {
   ]
 
   return (
-    <header className="bg-blue-700 text-white shadow-md">
+    <header className="bg-blue-700 text-white shadow-md z-10">
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3 relative">
         
         <Link to="/" className="text-2xl font-bold">
@@ -57,13 +57,17 @@ function Header() {
 
         {/* Navigation Menu */}
         <ul
+          
           className={`absolute md:relative top-full left-0 w-full md:w-auto bg-blue-700 md:bg-transparent md:flex md:items-center shadow-lg md:shadow-none transition-all duration-300 ${
             menuOpen ? "block" : "hidden md:flex"
+
           }`}
         >
           {navItems.map((item) =>
             item.active ? (
-              <li key={item.name} className="w-full md:w-auto text-center">
+              <li key={item.name} 
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="w-full md:w-auto text-center">
                 <Link to={item.slug} className="block px-6 py-3 hover:bg-blue-600 md:hover:bg-transparent">
                   {item.name}
                 </Link>

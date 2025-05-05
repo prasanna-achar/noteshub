@@ -2,24 +2,29 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
-import { Button, Container } from "../components";
+import { Button, Container, PostCard } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import service from "../appwrite/config";
 
 export default function Post() {
     const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
-
+    var Allposts = []
     const userData = useSelector((state) => state.auth.userData);
 
     useEffect(() => {
         if (slug) {
+            appwriteService.getPosts().then((p) =>{
+                console.log(p)
+                Allposts.push(p)
+            })
             appwriteService.getPost(slug).then((post) => {
                 if (post) setPost(post);
                 else navigate("/");
             });
+            Allposts = Allposts.filter((p) => p.$id !== post.$id);
+            console.log(Allposts)
         } else navigate("/");
     }, [slug, navigate]);
     const isAuthor = post && userData ? post.userId === userData.$id : false;
@@ -33,13 +38,13 @@ export default function Post() {
     };
 
     return post ? (
-        <div className="py-8 px-4 md:px-0">
-            <Container>
-                <div className="w-full flex flex-col items-center md:flex-row md:justify-center mb-6 relative border rounded-xl p-4 bg-white shadow-md">
+        <div className="py-8 px-4 md:px-0 z-0">
+            <Container >
+                <div className="w-full flex flex-col items-center md:flex-row md:justify-center mb-6 relative border rounded-xl p-4 bg-white shadow-md z-0">
                 <img
                     src={appwriteService.getFilePreview(post.featuredImage)}
                     alt={post.title}
-                    className="rounded-xl w-full md:w-[60%] max-h-[400px] object-cover"
+                    className="rounded-xl w-full md:w-[60%] max-h-[400px] object-cover z-0"
                 />
 
                 {isAuthor && (
@@ -67,7 +72,8 @@ export default function Post() {
 
                 <div className="browser-css bg-gray-100 p-4 rounded-lg">
                 {parse(post.content)}
-                </div>
+                </div>   
+
             </Container>
         </div>
 

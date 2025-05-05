@@ -1,15 +1,17 @@
 import conf from "../conf/conf";
-import {Client, Account, ID, } from 'appwrite';
+import {Client, Account, ID} from 'appwrite';
 
 export class AuthService{
     client = new Client();
     account;
+    users;
     constructor(){
         this.client
                     .setEndpoint(conf.appwriteUrl)
                     .setProject(conf.appwriteProjectId);
 
         this.account = new Account(this.client);
+        // this.users = new Users(this.client)
     }
     async createAccount({email, password, name}){
         try {
@@ -46,6 +48,7 @@ export class AuthService{
         }
         return null;
     }
+
     async logout(){
         try {
             await this.account.deleteSessions();
